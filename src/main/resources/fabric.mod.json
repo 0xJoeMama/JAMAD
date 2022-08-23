@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "jamad",
+  "version": "${version}",
+  "name": "JAMAD",
+  "description": "Just Another Mod About Drawers",
+  "authors": [
+    "0xJoeMama"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/JAMAD/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "io.github.joemama.jamad.client.JamadClient"
+      }
+    ],
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "io.github.joemama.jamad.Jamad"
+      }
+    ],
+    "fabric-datagen": [
+      {
+        "adapter": "kotlin",
+        "value": "io.github.joemama.jamad.common.data.JamadDatagen"
+      }
+    ]
+  },
+  "mixins": [
+    "jamad.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.18.2",
+    "fabric-language-kotlin": ">=1.8.2+kotlin.1.7.10"
+  }
+}
