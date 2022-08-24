@@ -9,14 +9,15 @@ import net.minecraft.item.BlockItem
 import net.minecraft.util.registry.Registry
 
 object ModBlocks : ObjectRegistrar<Block>(Registry.BLOCK) {
-    val OakDrawer by this.registerWithItem("oak_drawer") {
+    val OAK_DRAWER by this.registerWithItem("oak_drawer") {
         DrawerBlock(FabricBlockSettings.copy(Blocks.OAK_PLANKS))
     }
-    val SpruceDrawer by this.registerWithItem("spruce_drawer") {
+    val SPRUCE_DRAWER by this.registerWithItem("spruce_drawer") {
         DrawerBlock(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS))
     }
 
-    private fun registerWithItem(path: String, block: () -> Block): Lazy<Block> = this.registerAndThen(path, block) {
-        ModItems.register(path) { BlockItem(it, ModItems.createDefaultSettings()) }
-    }
+    private fun <U> registerWithItem(path: String, block: () -> U): Lazy<U> where U : Block =
+        this.registerAndThen(path, block) {
+            ModItems.register(path) { BlockItem(it, ModItems.createDefaultSettings()) }
+        }
 }

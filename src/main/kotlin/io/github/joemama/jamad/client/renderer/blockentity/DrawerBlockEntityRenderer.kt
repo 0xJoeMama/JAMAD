@@ -1,13 +1,11 @@
 package io.github.joemama.jamad.client.renderer.blockentity
 
-import com.mojang.blaze3d.systems.RenderSystem
 import io.github.joemama.jamad.common.blockentity.DrawerBlockEntity
 import io.github.joemama.jamad.common.util.runInContext
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.LightmapTextureManager
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.VertexConsumerProvider
-import net.minecraft.client.render.WorldRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.render.model.json.ModelTransformation
 import net.minecraft.client.util.math.MatrixStack

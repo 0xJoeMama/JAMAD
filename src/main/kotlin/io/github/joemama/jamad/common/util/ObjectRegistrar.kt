@@ -7,13 +7,13 @@ import org.slf4j.Logger
 open class ObjectRegistrar<T>(private val registry: Registry<T>) : Registrar {
     private val entries = mutableListOf<Pair<String, Lazy<T>>>()
 
-    fun register(path: String, obj: () -> T): Lazy<T> {
+    fun <U> register(path: String, obj: () -> U): Lazy<U> where U : T {
         val created = lazy(obj)
         entries.add(path to created)
         return created
     }
 
-    fun registerAndThen(path: String, obj: () -> T, then: (T) -> Unit): Lazy<T> = this.register(path) {
+    fun <U> registerAndThen(path: String, obj: () -> U, then: (U) -> Unit): Lazy<U> where U : T = this.register(path) {
         val created = obj()
         then(created)
         created

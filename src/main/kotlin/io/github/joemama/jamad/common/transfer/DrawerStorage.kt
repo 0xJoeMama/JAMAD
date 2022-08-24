@@ -2,11 +2,8 @@ package io.github.joemama.jamad.common.transfer
 
 import io.github.joemama.jamad.common.blockentity.DrawerBlockEntity
 import io.github.joemama.jamad.common.network.ModNetworking
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext
 import net.minecraft.nbt.NbtCompound
 
 @Suppress("UnstableApiUsage")

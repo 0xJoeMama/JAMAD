@@ -10,14 +10,15 @@ import net.minecraft.util.Identifier
 
 @Suppress("UnstableApiUsage")
 object ModNetworking {
-    val VariantPacket: Identifier = Jamad.prefix("sync")
+    val VARIANT_SYNC: Identifier = Jamad.prefix("sync")
 
     fun sendVariantUpdate(variant: ItemVariant, drawer: DrawerBlockEntity) {
         val buf = PacketByteBufs.create()
         buf.writeBlockPos(drawer.pos)
         variant.toPacket(buf)
+
         for (player in PlayerLookup.tracking(drawer)) {
-            ServerPlayNetworking.send(player, VariantPacket, buf)
+            ServerPlayNetworking.send(player, VARIANT_SYNC, buf)
         }
     }
 }

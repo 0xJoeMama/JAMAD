@@ -10,7 +10,7 @@ object ModApiLookup : Registrar {
     override fun register(modid: String, logger: Logger) {
         ItemStorage.SIDED.registerForBlockEntity(
             { blockEntity, _ -> (blockEntity as DrawerBlockEntity).storage },
-            ModBlockEntityTypes.Drawer
+            ModBlockEntityTypes.DRAWER
         )
 
         logger.info("Successfully registered mod APIs!")

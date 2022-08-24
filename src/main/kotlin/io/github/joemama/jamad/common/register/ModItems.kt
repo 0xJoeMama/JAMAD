@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.registry.Registry
 
 object ModItems : ObjectRegistrar<Item>(Registry.ITEM) {
-    private val ItemGroup: ItemGroup =
-        FabricItemGroupBuilder.build(Jamad.prefix("group")) { ItemStack(DrawerTinkerer) }
+    private val MOD_GROUP: ItemGroup =
+        FabricItemGroupBuilder.build(Jamad.prefix("group")) { ItemStack(DRAWER_TINKERER) }
 
-    val DrawerTinkerer by this.register("drawer_tinkerer") {
+    val DRAWER_TINKERER by this.register("drawer_tinkerer") {
         DrawerTinkererItem(this.createDefaultSettings().maxCount(1))
     }
 
-    fun createDefaultSettings(): Item.Settings = Item.Settings().group(ItemGroup)
+    fun createDefaultSettings(): Item.Settings = Item.Settings().group(MOD_GROUP)
 }

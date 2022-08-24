@@ -1,6 +1,7 @@
 package io.github.joemama.jamad.common.block
 
 import io.github.joemama.jamad.common.blockentity.DrawerBlockEntity
+import io.github.joemama.jamad.common.util.commitTransaction
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage
@@ -30,15 +31,15 @@ class DrawerBlock(settings: Settings) : HorizontalFacingBlock(settings), BlockEn
 
     companion object {
         @JvmStatic
-        val HorizontalFacing: DirectionProperty = Properties.HORIZONTAL_FACING
+        val HORIZONTAL_FACING: DirectionProperty = Properties.HORIZONTAL_FACING
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState =
-        this.defaultState.with(HorizontalFacing, ctx.playerFacing.opposite)
+        this.defaultState.with(HORIZONTAL_FACING, ctx.playerFacing.opposite)
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
         super.appendProperties(builder)
-        builder.add(HorizontalFacing)
+        builder.add(HORIZONTAL_FACING)
     }
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity =
@@ -54,25 +55,18 @@ class DrawerBlock(settings: Settings) : HorizontalFacingBlock(settings), BlockEn
         hand: Hand,
         hit: BlockHitResult
     ): ActionResult {
-        if (!world.isClient) {
-            if (hit.side == state[HorizontalFacing]) {
-                ItemStorage.SIDED.find(world, pos, hit.side)?.let {
-                    val stackInHand = player.getStackInHand(Hand.MAIN_HAND)
-                    if (!stackInHand.isEmpty) {
-                        val transaction = Transaction.openOuter()
-
-                        try {
-                            val inserted =
-                                it.insert(ItemVariant.of(stackInHand), stackInHand.count.toLong(), transaction)
-                            stackInHand.decrement(inserted.toInt())
-                        } finally {
-                            transaction.commit()
-                        }
+        if (!world.isClient && hit.side == state[HORIZONTAL_FACING]) {
+            ItemStorage.SIDED.find(world, pos, hit.side)?.let {
+                val stackInHand = player.getStackInHand(Hand.MAIN_HAND)
+                if (!stackInHand.isEmpty) {
+                    commitTransaction {
+                        val inserted = it.insert(ItemVariant.of(stackInHand), stackInHand.count.toLong(), this)
+                        stackInHand.decrement(inserted.toInt())
                     }
                 }
-
-                return ActionResult.CONSUME
             }
+
+            return ActionResult.CONSUME
         }
 
         return ActionResult.SUCCESS
@@ -104,25 +98,21 @@ class DrawerBlock(settings: Settings) : HorizontalFacingBlock(settings), BlockEn
         pos: BlockPos,
         direction: Direction
     ) {
-        if (direction != state.get(HorizontalFacing)) {
+        if (direction != state[HORIZONTAL_FACING]) {
             return
         }
 
         ItemStorage.SIDED.find(world, pos, direction)?.let {
-            val transaction = Transaction.openOuter()
-            try {
+            commitTransaction {
                 val handStack = player.mainHandStack
-                val handVariant = ItemVariant.of(handStack)
 
-                for (variant in it.iterable(transaction)) {
+                for (variant in it.iterable(this)) {
                     val stored = variant.resource
-                    if (!stored.isBlank && (handStack.isEmpty || stored == handVariant)) {
-                        extractItem(player, it, handStack, stored, transaction)
-                        player.swingHand(Hand.MAIN_HAND)
+                    if (!stored.isBlank) {
+                        extractItem(player, it, handStack, stored, this)
+                        break
                     }
                 }
-            } finally {
-                transaction.commit()
             }
         }
     }
@@ -135,32 +125,16 @@ class DrawerBlock(settings: Settings) : HorizontalFacingBlock(settings), BlockEn
         variant: ItemVariant,
         transaction: Transaction
     ) {
-        val amount = if (player.isSneaking) handStack.maxCount else 1
-        val extracted = storage.extract(variant, amount.toLong(), transaction)
+        val extractedStack = variant.toStack()
+        val amount = if (player.isSneaking) extractedStack.maxCount else 1
+        extractedStack.count = storage.extract(variant, amount.toLong(), transaction).toInt()
 
         if (handStack.isEmpty) {
-            variant.toStack(extracted.toInt()).also {
+            extractedStack.also {
                 player.setStackInHand(Hand.MAIN_HAND, it)
             }
         } else {
-            val newCount = handStack.count + extracted
-            val extractedStack = variant.toStack(newCount.toInt())
-
-            if (extractedStack.count > extractedStack.maxCount) {
-                val extraStack = extractedStack.copy()
-                extraStack.count = extractedStack.count - extractedStack.maxCount
-
-                extractedStack.count = extractedStack.maxCount
-
-                // TODO: Look into using increment instead of this?!
-                player.setStackInHand(Hand.MAIN_HAND, extractedStack)
-
-                if (!player.giveItemStack(extraStack)) {
-                    player.dropItem(extraStack, false)
-                }
-            } else {
-                handStack.count = newCount.toInt()
-            }
+            player.giveItemStack(extractedStack)
         }
     }
 }

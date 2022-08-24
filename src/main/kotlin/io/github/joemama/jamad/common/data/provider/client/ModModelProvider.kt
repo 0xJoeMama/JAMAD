@@ -12,12 +12,12 @@ import net.minecraft.data.client.TextureMap
 class ModModelProvider(gen: FabricDataGenerator) : FabricModelProvider(gen) {
     override fun generateBlockStateModels(blockStateModelGenerator: BlockStateModelGenerator) {
         blockStateModelGenerator.registerNorthDefaultHorizontalRotatable(
-            ModBlocks.OakDrawer,
-            TextureMap.texture(ModBlocks.OakDrawer)
+            ModBlocks.OAK_DRAWER,
+            TextureMap.texture(ModBlocks.OAK_DRAWER)
         )
     }
 
     override fun generateItemModels(itemModelGenerator: ItemModelGenerator) {
-        itemModelGenerator.register(ModItems.DrawerTinkerer, Models.GENERATED)
+        itemModelGenerator.register(ModItems.DRAWER_TINKERER, Models.GENERATED)
     }
 }

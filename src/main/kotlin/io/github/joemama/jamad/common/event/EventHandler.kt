@@ -26,9 +26,7 @@ object EventHandler : EventRegistrar<EventHandler>, AttackBlockCallback {
         val block = state.block
 
         if (block is DrawerBlock) {
-            if (!world.isClient && !player.isSpectator) {
-                block.playerClicked(state, world, player, pos, direction)
-            }
+            block.playerClicked(state, world, player, pos, direction)
         }
 
         return ActionResult.PASS

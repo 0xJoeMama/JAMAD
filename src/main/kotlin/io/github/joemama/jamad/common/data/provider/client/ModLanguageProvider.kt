@@ -22,11 +22,6 @@ class ModLanguageProvider(private val gen: FabricDataGenerator) : DataProvider {
         .arrayListValues()
         .build()
 
-    companion object {
-        @JvmStatic
-        val Gson: Gson = GsonBuilder().setPrettyPrinting().create()
-    }
-
     override fun run(cache: DataCache) {
         this.registerMappings()
         this.mappings.asMap().forEach { (locale, mappings) ->
@@ -36,21 +31,21 @@ class ModLanguageProvider(private val gen: FabricDataGenerator) : DataProvider {
                 json.addProperty(key, mapping)
             }
 
-            DataProvider.writeToPath(Gson, cache, json, gen.output / "assets" / gen.modId / "lang" / "$locale.json")
+            DataProvider.writeToPath(GSON, cache, json, gen.output / "assets" / gen.modId / "lang" / "$locale.json")
         }
     }
 
     private fun registerMappings() {
         this.createLocale("en_us") {
-            map(ModItems.DrawerTinkerer, "Drawer Tinkerer")
-            map(ModBlocks.OakDrawer, "Oak Drawer")
-            map(ModBlocks.SpruceDrawer, "Spruce Drawer")
+            map(ModItems.DRAWER_TINKERER, "Drawer Tinkerer")
+            map(ModBlocks.OAK_DRAWER, "Oak Drawer")
+            map(ModBlocks.SPRUCE_DRAWER, "Spruce Drawer")
         }
 
         this.createLocale("el_gr") {
-            map(ModItems.DrawerTinkerer, "Επεξεργαστής Ντουλαπιών")
-            map(ModBlocks.OakDrawer, "Βελανιδένιο Ντουλάπι")
-            map(ModBlocks.SpruceDrawer, "Ντουλάπι Πικέας")
+            map(ModItems.DRAWER_TINKERER, "Επεξεργαστής Ντουλαπιών")
+            map(ModBlocks.OAK_DRAWER, "Βελανιδένιο Ντουλάπι")
+            map(ModBlocks.SPRUCE_DRAWER, "Ντουλάπι Πικέας")
         }
     }
 
@@ -60,6 +55,10 @@ class ModLanguageProvider(private val gen: FabricDataGenerator) : DataProvider {
     }
 
     override fun getName(): String = "Language"
+
+    companion object {
+        val GSON: Gson = GsonBuilder().setPrettyPrinting().create()
+    }
 }
 
 class Mapper(val consumer: (String, String) -> Unit) {
@@ -67,19 +66,19 @@ class Mapper(val consumer: (String, String) -> Unit) {
         consumer(key, mapping)
     }
 
-    fun map(key: TranslatableText, value: String) = this.map(key.key, value)
+    fun map(key: TranslatableText, mapping: String) = this.map(key.key, mapping)
 
-    fun map(item: Item, value: String) {
+    fun map(item: Item, mapping: String) {
         val itemId = Registry.ITEM.getId(item)
-        this.map("item.${itemId.namespace}.${itemId.path}", value)
+        this.map("item.${itemId.namespace}.${itemId.path}", mapping)
     }
 
-    fun map(block: Block, value: String, item: Boolean = true) {
+    fun map(block: Block, mapping: String, item: Boolean = true) {
         val blockId = Registry.BLOCK.getId(block)
-        this.map("block.${blockId.namespace}.${blockId.path}", value)
+        this.map("block.${blockId.namespace}.${blockId.path}", mapping)
 
         if (item) {
-            this.map(block.asItem(), value)
+            this.map(block.asItem(), mapping)
         }
     }
 }

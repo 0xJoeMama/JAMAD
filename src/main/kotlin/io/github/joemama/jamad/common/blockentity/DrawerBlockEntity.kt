@@ -9,10 +9,13 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.network.Packet
+import net.minecraft.network.listener.ClientPlayPacketListener
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 
 @Suppress("UnstableApiUsage")
-class DrawerBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlockEntityTypes.Drawer, pos, state) {
+class DrawerBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlockEntityTypes.DRAWER, pos, state) {
     val storage = DrawerStorage(this)
 
     @Environment(EnvType.CLIENT)
@@ -26,7 +29,23 @@ class DrawerBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlock
 
     override fun readNbt(nbt: NbtCompound) {
         super.readNbt(nbt)
-        this.storage.readNbt(nbt)
+        if ("ItemStorage" in nbt) {
+            this.storage.readNbt(nbt)
+        }
+
+        if ("Variant" in nbt) {
+            this.cachedVariant = ItemVariant.fromNbt(nbt.getCompound("Variant"))
+        }
+    }
+
+    override fun toInitialChunkDataNbt(): NbtCompound {
+        val variantNbt = NbtCompound()
+        variantNbt.put("Variant", this.storage.variant.toNbt())
+        return variantNbt
+    }
+
+    override fun toUpdatePacket(): Packet<ClientPlayPacketListener>? {
+        return BlockEntityUpdateS2CPacket.create(this)
     }
 
     fun dropContents() {

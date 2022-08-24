@@ -14,9 +14,9 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant
 @Environment(EnvType.CLIENT)
 object JamadClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ClientPlayNetworking.registerGlobalReceiver(ModNetworking.VariantPacket) { client, _, buf, _ ->
+        @Suppress("UnstableApiUsage")
+        ClientPlayNetworking.registerGlobalReceiver(ModNetworking.VARIANT_SYNC) { client, _, buf, _ ->
             val pos = buf.readBlockPos()
-            @Suppress("UnstableApiUsage")
             val variant = ItemVariant.fromPacket(buf)
 
             client.execute {

@@ -15,14 +15,6 @@ class RegistrarPipeline(modid: String, initializer: RegistrarPipeline.() -> Unit
     private val logger: Logger = LoggerFactory.getLogger("RegistrarPipeline/${modid}")
     private val registrars = mutableListOf<Registrar>()
 
-    companion object {
-        @JvmStatic
-        fun fromProvider(modid: String, provider: RegistrarProvider) =
-            RegistrarPipeline(modid) {
-                provider.registrars.forEach { add(it) }
-            }
-    }
-
     init {
         this.logger.info("Started registrar pipeline for mod '$modid'!")
         this.initializer()
@@ -34,5 +26,13 @@ class RegistrarPipeline(modid: String, initializer: RegistrarPipeline.() -> Unit
 
     fun add(registrar: Registrar) {
         registrars.add(registrar)
+    }
+
+    companion object {
+        @JvmStatic
+        fun fromProvider(modid: String, provider: RegistrarProvider) =
+            RegistrarPipeline(modid) {
+                provider.registrars.forEach { add(it) }
+            }
     }
 }
