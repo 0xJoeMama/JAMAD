@@ -1,4 +1,4 @@
-package io.github.joemama.jamad.common.data.provider.client
+package io.github.joemama.jamad.data.provider.client
 
 import io.github.joemama.jamad.common.register.ModBlocks
 import io.github.joemama.jamad.common.register.ModItems

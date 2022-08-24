@@ -1,4 +1,4 @@
-package io.github.joemama.jamad.common.data.provider.client
+package io.github.joemama.jamad.data.provider.client
 
 import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
@@ -37,11 +37,16 @@ class ModLanguageProvider(private val gen: FabricDataGenerator) : DataProvider {
 
     private fun registerMappings() {
         this.createLocale("en_us") {
-            map(ModItems.DRAWER_TINKERER, "Drawer Tinkerer")
-            map(ModBlocks.OAK_DRAWER, "Oak Drawer")
-            map(ModBlocks.SPRUCE_DRAWER, "Spruce Drawer")
+            ModBlocks.map { it.second to spaceSeparatedCamelCase(it.first) }.forEach { (block, name) ->
+                map(block, name)
+            }
+
+            ModItems.map { it.second to spaceSeparatedCamelCase(it.first) }.forEach { (item, name) ->
+                map(item, name)
+            }
         }
 
+        // TODO: Actually add translations!
         this.createLocale("el_gr") {
             map(ModItems.DRAWER_TINKERER, "Επεξεργαστής Ντουλαπιών")
             map(ModBlocks.OAK_DRAWER, "Βελανιδένιο Ντουλάπι")
@@ -59,6 +64,14 @@ class ModLanguageProvider(private val gen: FabricDataGenerator) : DataProvider {
     companion object {
         val GSON: Gson = GsonBuilder().setPrettyPrinting().create()
     }
+
+    private fun spaceSeparatedCamelCase(s: String): String =
+        s.split("_").joinToString(" ") { word ->
+            buildString {
+                append(word[0].uppercase())
+                append(word.substring(1))
+            }
+        }
 }
 
 class Mapper(val consumer: (String, String) -> Unit) {

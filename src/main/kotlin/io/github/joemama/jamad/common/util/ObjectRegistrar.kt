@@ -4,7 +4,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.slf4j.Logger
 
-open class ObjectRegistrar<T>(private val registry: Registry<T>) : Registrar {
+open class ObjectRegistrar<T>(private val registry: Registry<T>) : Registrar, Iterable<Pair<String, T>> {
     private val entries = mutableListOf<Pair<String, Lazy<T>>>()
 
     fun <U> register(path: String, obj: () -> U): Lazy<U> where U : T {
@@ -26,4 +26,7 @@ open class ObjectRegistrar<T>(private val registry: Registry<T>) : Registrar {
             Registry.register(this.registry, Identifier(modid, path), obj.value)
         }
     }
+
+    override fun iterator(): Iterator<Pair<String, T>> =
+        this.entries.map { (key, value) -> Pair(key, value.value) }.iterator()
 }

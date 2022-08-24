@@ -1,6 +1,6 @@
-package io.github.joemama.jamad.common.data
+package io.github.joemama.jamad.data
 
-import io.github.joemama.jamad.common.data.provider.client.ModLanguageProvider
+import io.github.joemama.jamad.data.provider.client.ModLanguageProvider
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 

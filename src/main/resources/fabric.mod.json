@@ -27,7 +27,7 @@
     "fabric-datagen": [
       {
         "adapter": "kotlin",
-        "value": "io.github.joemama.jamad.common.data.JamadDatagen"
+        "value": "io.github.joemama.jamad.data.JamadDatagen"
       }
     ]
   },

@@ -1,7 +1,19 @@
 {
-  "item.jamad.drawer_tinkerer": "Drawer Tinkerer",
   "block.jamad.oak_drawer": "Oak Drawer",
   "item.jamad.oak_drawer": "Oak Drawer",
   "block.jamad.spruce_drawer": "Spruce Drawer",
-  "item.jamad.spruce_drawer": "Spruce Drawer"
+  "item.jamad.spruce_drawer": "Spruce Drawer",
+  "block.jamad.birch_drawer": "Birch Drawer",
+  "item.jamad.birch_drawer": "Birch Drawer",
+  "block.jamad.jungle_drawer": "Jungle Drawer",
+  "item.jamad.jungle_drawer": "Jungle Drawer",
+  "block.jamad.acacia_drawer": "Acacia Drawer",
+  "item.jamad.acacia_drawer": "Acacia Drawer",
+  "block.jamad.dark_oak_drawer": "Dark Oak Drawer",
+  "item.jamad.dark_oak_drawer": "Dark Oak Drawer",
+  "block.jamad.crimson_drawer": "Crimson Drawer",
+  "item.jamad.crimson_drawer": "Crimson Drawer",
+  "block.jamad.warped_drawer": "Warped Drawer",
+  "item.jamad.warped_drawer": "Warped Drawer",
+  "item.jamad.drawer_tinkerer": "Drawer Tinkerer"
 }

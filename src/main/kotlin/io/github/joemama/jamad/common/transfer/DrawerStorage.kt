@@ -10,7 +10,7 @@ import net.minecraft.nbt.NbtCompound
 class DrawerStorage(private val drawer: DrawerBlockEntity) : SingleVariantStorage<ItemVariant>() {
     var syncedVariant: ItemVariant = blankVariant
 
-    override fun getCapacity(variant: ItemVariant?): Long = 1024
+    override fun getCapacity(variant: ItemVariant): Long = 1024
 
     override fun getBlankVariant(): ItemVariant = ItemVariant.blank()
 

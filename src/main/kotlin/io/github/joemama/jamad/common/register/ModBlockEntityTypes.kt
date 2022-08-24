@@ -11,6 +11,12 @@ object ModBlockEntityTypes : ObjectRegistrar<BlockEntityType<*>>(Registry.BLOCK_
         FabricBlockEntityTypeBuilder.create(::DrawerBlockEntity)
             .addBlock(ModBlocks.OAK_DRAWER)
             .addBlock(ModBlocks.SPRUCE_DRAWER)
+            .addBlock(ModBlocks.BIRCH_DRAWER)
+            .addBlock(ModBlocks.JUNGLE_DRAWER)
+            .addBlock(ModBlocks.ACACIA_DRAWER)
+            .addBlock(ModBlocks.DARK_OAK_DRAWER)
+            .addBlock(ModBlocks.CRIMSON_DRAWER)
+            .addBlock(ModBlocks.WARPED_DRAWER)
             .build(null)
     }
 }

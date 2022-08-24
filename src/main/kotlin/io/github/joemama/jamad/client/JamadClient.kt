@@ -32,6 +32,6 @@ object JamadClient : ClientModInitializer {
             add(ModBlockEntityRenderers)
         }
 
-        Jamad.Logger.info("JamadClient has been initialized")
+        Jamad.LOGGER.info("JamadClient has been initialized")
     }
 }

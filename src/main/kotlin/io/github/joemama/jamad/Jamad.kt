@@ -12,8 +12,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 object Jamad : ModInitializer {
-    const val MODID = "jamad"
-    val Logger: Logger = LoggerFactory.getLogger(Jamad::class.java)
+    const val MODID: String = "jamad"
+    val LOGGER: Logger = LoggerFactory.getLogger(Jamad::class.java)
 
     override fun onInitialize() {
         RegistrarPipeline(MODID) {
@@ -24,7 +24,7 @@ object Jamad : ModInitializer {
             add(EventHandler)
         }
 
-        Logger.info("Jamad has been initialized")
+        LOGGER.info("Jamad has been initialized")
     }
 
     fun prefix(path: String): Identifier = Identifier(MODID, path)
