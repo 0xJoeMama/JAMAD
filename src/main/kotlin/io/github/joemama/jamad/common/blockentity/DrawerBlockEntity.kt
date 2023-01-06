@@ -1,5 +1,6 @@
 package io.github.joemama.jamad.common.blockentity
 
+import io.github.joemama.jamad.common.lib.UpgradeManager
 import io.github.joemama.jamad.common.register.ModBlockEntityTypes
 import io.github.joemama.jamad.common.transfer.DrawerStorage
 import io.github.joemama.jamad.common.util.spawnItemEntity
@@ -17,6 +18,7 @@ import net.minecraft.util.math.BlockPos
 @Suppress("UnstableApiUsage")
 class DrawerBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlockEntityTypes.DRAWER, pos, state) {
     val storage = DrawerStorage(this)
+    val upgradeManager: UpgradeManager = UpgradeManager(this)
 
     @Environment(EnvType.CLIENT)
     @JvmField
